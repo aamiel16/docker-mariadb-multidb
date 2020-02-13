@@ -6,7 +6,7 @@ Inspired by [docker-postgresql-multiple-databases](https://github.com/mrts/docke
 ## Usage
 1. Clone the repository
 2. Mount the repository as a volume to `/docker-entrypoint-initdb.d`
-3. Set the `POSTGRES_MULTIPLE_DATABASES` environment variable to be comma-seperated database names
+3. Set the `MYSQL_MULTIPLE_DATABASES` environment variable to be comma-seperated database names
 
 ```
 mariadb:
