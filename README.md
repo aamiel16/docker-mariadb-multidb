@@ -1,5 +1,7 @@
 # docker-mariadb-multidb
-Multiple databases with the official [MariaDB](https://hub.docker.com/_/mariadb) docker image. Inspired by [docker-postgresql-multiple-databases](https://github.com/mrts/docker-postgresql-multiple-databases)
+Multiple databases with the official [MariaDB](https://hub.docker.com/_/mariadb) docker image.
+
+Inspired by [docker-postgresql-multiple-databases](https://github.com/mrts/docker-postgresql-multiple-databases)
 
 ## Usage
 1. Clone the repository
