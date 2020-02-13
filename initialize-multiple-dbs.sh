@@ -4,7 +4,6 @@ set -u
 
 function create_db() {
   local db=$1
-  local is_env_user=$([ $MYSQL_USER = $db ] && echo "2" || echo "0")
   local pass=$([ $MYSQL_USER = $db ] && echo "$MYSQL_PASS" || echo "$db")
   mysql -v -u root --password=$MYSQL_ROOT_PASSWORD <<-EOSQL
       -- create database
@@ -12,15 +11,14 @@ function create_db() {
 
       -- create user and grant permissions
       DELIMITER $$
-        IF $is_env_user > 0 THEN
-          GRANT ALL PRIVILEGES ON $db.* TO '$db'@'%';
-        ELSE
-          CREATE USER '$db' IDENTIFIED BY '$pass';
-          GRANT USAGE ON *.* TO '$db'@localhost IDENTIFIED BY '$pass';
-          GRANT ALL PRIVILEGES ON $db.* TO '$db'@localhost;
-        END IF;
-      $$
+      IF '$db'!='$MYSQL_USER' THEN
+        CREATE USER '$db' IDENTIFIED BY '$pass';
+        GRANT USAGE ON *.* TO '$db'@'localhost' IDENTIFIED BY '$pass';
+      END IF $$
       DELIMITER ;
+
+      -- grant db permmissions
+      GRANT ALL PRIVILEGES ON $db.* TO '$db'@'%';
 
       -- apply permissions
       FLUSH PRIVILEGES;
