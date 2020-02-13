@@ -9,15 +9,18 @@ function create_db() {
       -- create database
       CREATE DATABASE IF NOT EXISTS $db;
 
-      -- create user and grant permissions
+      -- If db name is not equal to env user, create user from db name
       DELIMITER $$
       IF '$db'!='$MYSQL_USER' THEN
+        -- create user
         CREATE USER '$db' IDENTIFIED BY '$pass';
+
+        -- grant user server access
         GRANT USAGE ON *.* TO '$db'@'localhost' IDENTIFIED BY '$pass';
       END IF $$
       DELIMITER ;
 
-      -- grant db permmissions
+      -- grant user db privileges
       GRANT ALL PRIVILEGES ON $db.* TO '$db'@'%';
 
       -- apply permissions
