@@ -4,7 +4,6 @@ set -u
 
 function create_db() {
   local db=$1
-  local pass=$([ $MYSQL_USER = $db ] && echo "$MYSQL_PASS" || echo "$db")
   mysql -v -u root --password=$MYSQL_ROOT_PASSWORD <<-EOSQL
       -- create database
       CREATE DATABASE IF NOT EXISTS $db;
@@ -13,10 +12,10 @@ function create_db() {
       DELIMITER $$
       IF '$db'!='$MYSQL_USER' THEN
         -- create user
-        CREATE USER '$db' IDENTIFIED BY '$pass';
+        CREATE USER '$db' IDENTIFIED BY '$db';
 
         -- grant user server access
-        GRANT USAGE ON *.* TO '$db'@'localhost' IDENTIFIED BY '$pass';
+        GRANT USAGE ON *.* TO '$db'@'localhost' IDENTIFIED BY '$db';
       END IF $$
       DELIMITER ;
 
